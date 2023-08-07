@@ -2,8 +2,17 @@ import telebot
 import re
 import threading
 import fcntl
+import os
 
-lock_file = open("/tmp/bot_lock", "w")
+LOCK_FILE_PATH = "/tmp/bot_lock"
+
+# Check if lock file exists, if not, create it
+if not os.path.exists(LOCK_FILE_PATH):
+    open(LOCK_FILE_PATH, "w").close()
+
+# Initialize the lock file
+lock_file = open(LOCK_FILE_PATH, "r+")
+
 try:
     fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
 except BlockingIOError:
