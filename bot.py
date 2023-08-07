@@ -1,6 +1,14 @@
 import telebot
 import re
 import threading
+import fcntl
+
+lock_file = open("/tmp/bot_lock", "w")
+try:
+    fcntl.flock(lock_file, fcntl.LOCK_EX | fcntl.LOCK_NB)
+except BlockingIOError:
+    print("Another instance is already running. Exiting.")
+    exit(1)
 
 # Set your Telegram bot token here
 TELEGRAM_BOT_TOKEN = "6418563359:AAEO4WdB-ksRAfFlX9GC-d9bzrG6HnrYbBc"
